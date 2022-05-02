@@ -1,0 +1,16 @@
+﻿@model BirthdayWebApi.Models.InvitationModel
+@{
+    ViewBag.Title = "Thanks";
+}
+<h2>Thanks,@Model.Name</h2>
+<div class="lead">
+    @if (Model.JoiningCase == true)
+    {
+        @:I'm so glad you came:) All preparations are completed..!
+        @Html.Action("Attendees", "Home")
+    }
+    else
+    {
+        @:I'm so sorry you won't be able to come:( Thank you for reporting this.
+    }
+</div>

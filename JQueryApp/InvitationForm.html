@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <img id="ajax-loader"
+             src="Tp29a.gif" style="display:none;width:100px;" />
+        <hr />
+        <div id="results" class="alert alert-success" style="display:none;">
+            <h3>Bilgileriniz kayıt edildi </h3>
+            <h4>
+                <span id="Comers">  </span>
+            </h4>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading"> <h4>You're invited too!</h4>  </div>
+                    <div class="panel-body">
+                        <form id="InvitationForm">
+                            <div class="form-group">
+                                <label>Name :</label>
+                                <input type="text" id="Name" name="Name" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Eposta :</label>
+                                <input type="text" id="Eposta" name="Eposta" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Are you joining?</label>
+                                <select id="JoiningCase" name="JoiningCase" class="form-control">
+                                    <option>Are you joining the party?</option>
+                                    <option value="true">Yes, I'm coming.</option>
+                                    <option value="false">No, I'm not coming.</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <input class="btn btn-success" type="submit" value="Submit" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function GetAttendees() {
+            var html = [];
+            $.getJSON("https://localhost:44303/api/Invitation/GetAttendees", function (data) {
+                $.each(data, function (key, value) {
+                    html.push("<label class='label label-success'>" + value.Name + "</label> ");
+                });
+                $("#Comers").empty().append(html);
+            });
+        }
+        $("#InvitationForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "https://localhost:44303/api/Invitation/Add",
+                type: "POST",
+                data: {
+                    Name: $("#Name").val(),
+                    Eposta: $("#Eposta").val(),
+                    JoiningCase: $("#JoiningCase").val()
+                },
+                beforeSend: function () {
+                    $("#ajax-loader").show();
+                },
+                complete: function () {
+                    $("#ajax-loader").hide();
+                },
+                success: function (data) {
+                    if ($("#JoiningCase").val() == "true") {
+                        GetAttendees();
+                    }
+                    $("#results").show();
+                },
+                error: function () {
+                    alert("An error ocurred.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

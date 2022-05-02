@@ -1,0 +1,31 @@
+﻿@model BirthdayWebApi.Models.InvitationModel
+@{
+    ViewBag.Title = "InvitationForm";
+}
+<h2>InvitationForm</h2>
+<div class="panel panel-success">
+    <div class="panel-heading"> <h4>You're invited too!</h4>  </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <label>Name :</label>
+                @Html.TextBoxFor(x => x.Name, new @*string*@{ @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Eposta :</label>
+                @Html.TextBoxFor(x => x.Eposta, new@*string*@{ @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Are you joining?</label>
+                @Html.DropDownListFor(x => x.JoiningCase, new[] { new SelectListItem() {Text="Yes,I'm coming.",
+           Value=bool.TrueString },
+           new SelectListItem() {Text="No,Unfourtunately I'm not.",
+           Value=bool.FalseString }}, "Are you coming?", new { @class = "form-control" })
+            </div>
+            <div class="text-center">
+                <input class="btn btn-success" type="submit" value="Submit" />
+            </div>
+        }
+    </div>
+</div>
